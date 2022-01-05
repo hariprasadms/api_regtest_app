@@ -1,6 +1,7 @@
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../new_post_page/new_post_page_widget.dart';
 import '../post_details_page/post_details_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,20 +39,31 @@ class _ListPostsPageWidgetState extends State<ListPostsPageWidget> {
               onTap: () async {
                 apiCallOutput = await CreateAPostCall.call(
                   title: 'Hari',
-                  body: 'Added',
+                  bod: 'Added',
                 );
                 if (apiCallOutput.succeeded) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(
                         'Added',
-                        style: TextStyle(),
+                        style: FlutterFlowTheme.title1.override(
+                          fontFamily: 'Poppins',
+                          color: FlutterFlowTheme.tertiaryColor,
+                        ),
                       ),
                       duration: Duration(milliseconds: 4000),
-                      backgroundColor: Color(0x00000000),
+                      backgroundColor: Color(0xFFE01818),
                     ),
                   );
                 }
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewPostPageWidget(
+                      newpost: apiCallOutput.jsonBody,
+                    ),
+                  ),
+                );
 
                 setState(() {});
               },

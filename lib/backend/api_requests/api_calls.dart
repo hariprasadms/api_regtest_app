@@ -25,12 +25,12 @@ class AllPostsCall {
 class CreateAPostCall {
   static Future<ApiCallResponse> call({
     String title = 'just a title',
-    String body = 'just a bodu',
+    String bod = 'just a bodu',
   }) {
     final body = '''
 {
   "title": "${title}",
-  "body": "${body}",
+  "body": "${bod}",
   "userId": 1
 }''';
     return ApiManager.instance.makeApiCall(
@@ -40,7 +40,7 @@ class CreateAPostCall {
       headers: {},
       params: {
         'title': title,
-        'body': body,
+        'bod': bod,
       },
       body: body,
       bodyType: BodyType.JSON,
