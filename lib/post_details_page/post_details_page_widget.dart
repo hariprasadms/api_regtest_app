@@ -25,15 +25,15 @@ class _PostDetailsPageWidgetState extends State<PostDetailsPageWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.primaryColor,
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
           'Post',
-          style: FlutterFlowTheme.bodyText1.override(
-            fontFamily: 'Poppins',
-            color: FlutterFlowTheme.tertiaryColor,
-            fontSize: 19,
-          ),
+          style: FlutterFlowTheme.of(context).bodyText1.override(
+                fontFamily: 'Poppins',
+                color: FlutterFlowTheme.of(context).tertiaryColor,
+                fontSize: 19,
+              ),
         ),
         actions: [],
         centerTitle: true,
@@ -47,11 +47,11 @@ class _PostDetailsPageWidgetState extends State<PostDetailsPageWidget> {
               widget.post,
               r'''$.title''',
             ).toString(),
-            style: FlutterFlowTheme.title3,
+            style: FlutterFlowTheme.of(context).title3,
           ),
           subtitle: Text(
             'Lorem ipsum dolor...',
-            style: FlutterFlowTheme.subtitle2,
+            style: FlutterFlowTheme.of(context).subtitle2,
           ),
           tileColor: Color(0xFFF5F5F5),
           dense: false,

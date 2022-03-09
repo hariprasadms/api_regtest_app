@@ -7,6 +7,8 @@ import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher.dart';
 
+import '../main.dart';
+
 import 'lat_lng.dart';
 
 export 'dart:math' show min, max;
@@ -130,6 +132,30 @@ dynamic getJsonField(dynamic response, String jsonPath) {
 }
 
 bool get isAndroid => !kIsWeb && Platform.isAndroid;
+bool responsiveVisibility({
+  @required BuildContext context,
+  bool phone = true,
+  bool tablet = true,
+  bool tabletLandscape = true,
+  bool desktop = true,
+}) {
+  final width = MediaQuery.of(context).size.width;
+  if (width < 479) {
+    return phone;
+  } else if (width < 767) {
+    return tablet;
+  } else if (width < 991) {
+    return tabletLandscape;
+  } else {
+    return desktop;
+  }
+}
+
+void setAppLanguage(BuildContext context, String language) =>
+    MyApp.of(context).setLocale(Locale(language, ''));
+
+void setDarkModeSetting(BuildContext context, ThemeMode themeMode) =>
+    MyApp.of(context).setThemeMode(themeMode);
 
 void showSnackbar(
   BuildContext context,

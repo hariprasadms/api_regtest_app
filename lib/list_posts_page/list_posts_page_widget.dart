@@ -1,8 +1,7 @@
 import '../backend/api_requests/api_calls.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../new_post_page/new_post_page_widget.dart';
-import '../post_details_page/post_details_page_widget.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,64 +13,37 @@ class ListPostsPageWidget extends StatefulWidget {
 }
 
 class _ListPostsPageWidgetState extends State<ListPostsPageWidget> {
-  ApiCallResponse apiCallOutput;
+  TextEditingController textController;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.primaryColor,
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
           'All Posts',
-          style: FlutterFlowTheme.bodyText1.override(
-            fontFamily: 'Poppins',
-            color: FlutterFlowTheme.tertiaryColor,
-            fontSize: 18,
-          ),
+          style: FlutterFlowTheme.of(context).bodyText1.override(
+                fontFamily: 'Poppins',
+                color: FlutterFlowTheme.of(context).tertiaryColor,
+                fontSize: 18,
+              ),
         ),
         actions: [
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
-            child: InkWell(
-              onTap: () async {
-                apiCallOutput = await CreateAPostCall.call(
-                  title: 'Hari',
-                  bod: 'Added',
-                );
-                if (apiCallOutput.succeeded) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Added',
-                        style: FlutterFlowTheme.title1.override(
-                          fontFamily: 'Poppins',
-                          color: FlutterFlowTheme.tertiaryColor,
-                        ),
-                      ),
-                      duration: Duration(milliseconds: 4000),
-                      backgroundColor: Color(0xFFE01818),
-                    ),
-                  );
-                }
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => NewPostPageWidget(
-                      newpost: apiCallOutput.jsonBody,
-                    ),
-                  ),
-                );
-
-                setState(() {});
-              },
-              child: Icon(
-                Icons.add,
-                color: FlutterFlowTheme.tertiaryColor,
-                size: 30,
-              ),
+            child: Icon(
+              Icons.add,
+              color: FlutterFlowTheme.of(context).tertiaryColor,
+              size: 30,
             ),
           ),
         ],
@@ -80,72 +52,99 @@ class _ListPostsPageWidgetState extends State<ListPostsPageWidget> {
       ),
       backgroundColor: Color(0xFFF5F5F5),
       body: SafeArea(
-        child: FutureBuilder<ApiCallResponse>(
-          future: AllPostsCall.call(),
-          builder: (context, snapshot) {
-            // Customize what your widget looks like when it's loading.
-            if (!snapshot.hasData) {
-              return Center(
-                child: SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: CircularProgressIndicator(
-                    color: FlutterFlowTheme.primaryColor,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            TextFormField(
+              onChanged: (_) => EasyDebounce.debounce(
+                'textController',
+                Duration(milliseconds: 0),
+                () => setState(() {}),
+              ),
+              controller: textController,
+              obscureText: false,
+              decoration: InputDecoration(
+                hintText: '[Some hint text...]',
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0x00000000),
+                    width: 1,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4.0),
+                    topRight: Radius.circular(4.0),
                   ),
                 ),
-              );
-            }
-            final listViewAllPostsResponse = snapshot.data;
-            return Builder(
-              builder: (context) {
-                final posts = AllPostsCall.getAllPosts(
-                      listViewAllPostsResponse.jsonBody,
-                    )?.toList() ??
-                    [];
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.vertical,
-                  itemCount: posts.length,
-                  itemBuilder: (context, postsIndex) {
-                    final postsItem = posts[postsIndex];
-                    return InkWell(
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PostDetailsPageWidget(
-                              post: postsItem,
-                              name: 'hari',
-                            ),
-                          ),
-                        );
-                      },
-                      child: ListTile(
-                        title: Text(
-                          getJsonField(
-                            postsItem,
-                            r'''$.title''',
-                          ).toString(),
-                          style: FlutterFlowTheme.title3,
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Color(0x00000000),
+                    width: 1,
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(4.0),
+                    topRight: Radius.circular(4.0),
+                  ),
+                ),
+              ),
+              style: FlutterFlowTheme.of(context).bodyText1,
+            ),
+            Expanded(
+              child: FutureBuilder<ApiCallResponse>(
+                future: AllPostsCall.call(),
+                builder: (context, snapshot) {
+                  // Customize what your widget looks like when it's loading.
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          color: FlutterFlowTheme.of(context).primaryColor,
                         ),
-                        subtitle: Text(
-                          'Lorem ipsum dolor...',
-                          style: FlutterFlowTheme.subtitle2,
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Color(0xFF303030),
-                          size: 20,
-                        ),
-                        tileColor: Color(0xFFF5F5F5),
-                        dense: false,
                       ),
                     );
-                  },
-                );
-              },
-            );
-          },
+                  }
+                  final listViewAllPostsResponse = snapshot.data;
+                  return Builder(
+                    builder: (context) {
+                      final posts = AllPostsCall.getAllPosts(
+                            (listViewAllPostsResponse?.jsonBody ?? ''),
+                          )?.toList() ??
+                          [];
+                      return ListView.builder(
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.vertical,
+                        itemCount: posts.length,
+                        itemBuilder: (context, postsIndex) {
+                          final postsItem = posts[postsIndex];
+                          return ListTile(
+                            title: Text(
+                              getJsonField(
+                                postsItem,
+                                r'''$.title''',
+                              ).toString(),
+                              style: FlutterFlowTheme.of(context).title3,
+                            ),
+                            subtitle: Text(
+                              'Lorem ipsum dolor...',
+                              style: FlutterFlowTheme.of(context).subtitle2,
+                            ),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(0xFF303030),
+                              size: 20,
+                            ),
+                            tileColor: Color(0xFFF5F5F5),
+                            dense: false,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

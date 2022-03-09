@@ -23,20 +23,37 @@ class _NewPostPageWidgetState extends State<NewPostPageWidget> {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.primaryColor,
+        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
           getJsonField(
             widget.newpost,
             r'''$.title''',
           ).toString(),
-          style: FlutterFlowTheme.bodyText1,
+          style: FlutterFlowTheme.of(context).bodyText1,
         ),
         actions: [],
         centerTitle: true,
         elevation: 4,
       ),
       backgroundColor: Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: ListTile(
+          title: Text(
+            getJsonField(
+              widget.newpost,
+              r'''$.body''',
+            ).toString(),
+            style: FlutterFlowTheme.of(context).title3,
+          ),
+          subtitle: Text(
+            'Lorem ipsum dolor...',
+            style: FlutterFlowTheme.of(context).subtitle2,
+          ),
+          tileColor: Color(0xFFF5F5F5),
+          dense: false,
+        ),
+      ),
     );
   }
 }

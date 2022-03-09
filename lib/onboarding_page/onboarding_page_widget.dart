@@ -2,7 +2,6 @@ import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../landing_page/landing_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,32 +20,65 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
       duration: 1000,
       delay: 1000,
       fadeIn: true,
+      initialState: AnimationState(
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        opacity: 1,
+      ),
     ),
     'columnOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 100,
       fadeIn: true,
+      initialState: AnimationState(
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        opacity: 1,
+      ),
     ),
     'imageOnPageLoadAnimation': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 1100,
       fadeIn: true,
-      scale: 0.4,
+      initialState: AnimationState(
+        scale: 0.4,
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        scale: 1,
+        opacity: 1,
+      ),
     ),
     'textOnPageLoadAnimation1': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 1100,
       fadeIn: true,
-      slideOffset: Offset(0, -70),
+      initialState: AnimationState(
+        offset: Offset(0, 70),
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        opacity: 1,
+      ),
     ),
     'textOnPageLoadAnimation2': AnimationInfo(
       trigger: AnimationTrigger.onPageLoad,
       duration: 600,
       delay: 1100,
       fadeIn: true,
-      slideOffset: Offset(0, -100),
+      initialState: AnimationState(
+        offset: Offset(0, 100),
+        opacity: 0,
+      ),
+      finalState: AnimationState(
+        offset: Offset(0, 0),
+        opacity: 1,
+      ),
     ),
   };
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -91,47 +123,39 @@ class _OnboardingPageWidgetState extends State<OnboardingPageWidget>
               padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
               child: Text(
                 'Welcome to Api Tesitng',
-                style: FlutterFlowTheme.title1.override(
-                  fontFamily: 'Lexend Deca',
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: FlutterFlowTheme.of(context).title1.override(
+                      fontFamily: 'Lexend Deca',
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
               ).animated([animationsMap['textOnPageLoadAnimation1']]),
             ),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 120),
               child: Text(
                 'Regression Testing',
-                style: FlutterFlowTheme.title3.override(
-                  fontFamily: 'Lexend Deca',
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.normal,
-                ),
+                style: FlutterFlowTheme.of(context).title3.override(
+                      fontFamily: 'Lexend Deca',
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
               ).animated([animationsMap['textOnPageLoadAnimation2']]),
             ),
             FFButtonWidget(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.fade,
-                    duration: Duration(milliseconds: 0),
-                    reverseDuration: Duration(milliseconds: 0),
-                    child: LandingPageWidget(),
-                  ),
-                );
+              onPressed: () {
+                print('Button pressed ...');
               },
               text: 'Start Test',
               options: FFButtonOptions(
                 width: 130,
                 height: 40,
-                color: FlutterFlowTheme.primaryColor,
-                textStyle: FlutterFlowTheme.subtitle2.override(
-                  fontFamily: 'Poppins',
-                  color: Colors.white,
-                ),
+                color: FlutterFlowTheme.of(context).primaryColor,
+                textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                      fontFamily: 'Poppins',
+                      color: Colors.white,
+                    ),
                 borderSide: BorderSide(
                   color: Colors.transparent,
                   width: 1,
